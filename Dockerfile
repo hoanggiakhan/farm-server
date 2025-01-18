@@ -1,15 +1,18 @@
 # Sử dụng hình ảnh JDK để xây dựng ứng dụng
 FROM openjdk:17-jdk-slim AS build
 
+# Cài đặt Maven
+RUN apt-get update && apt-get install -y maven
+
 # Thiết lập thư mục làm việc
 WORKDIR /app
 
 # Sao chép file pom.xml và tải các dependencies
-COPY pom.xml .
+COPY pom.xml . 
 RUN mvn dependency:go-offline
 
 # Sao chép toàn bộ mã nguồn và build ứng dụng
-COPY . .
+COPY . . 
 RUN mvn package -DskipTests
 
 # Sử dụng hình ảnh JRE để chạy ứng dụng
